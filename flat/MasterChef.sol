@@ -1,3 +1,7 @@
+// Sources flattened with hardhat v2.13.0 https://hardhat.org
+
+// File contracts/farm/MasterChef.sol
+
 // SPDX-License-Identifier: None
 pragma solidity 0.6.12;
 

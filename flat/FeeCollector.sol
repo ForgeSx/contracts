@@ -30,7 +30,6 @@ abstract contract Context {
 
 // File @openzeppelin/contracts/access/Ownable.sol@v4.8.2
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.7.0) (access/Ownable.sol)
 
 pragma solidity ^0.8.0;
@@ -115,7 +114,6 @@ abstract contract Ownable is Context {
 
 // File contracts/interfaces/IERC20.sol
 
-// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0;
 
 interface IERC20 {
@@ -137,7 +135,6 @@ interface IERC20 {
 
 // File contracts/FeeCollector.sol
 
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 

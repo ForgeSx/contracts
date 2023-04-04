@@ -2,6 +2,7 @@ const {ethers} = require("hardhat");
 const hre = require("hardhat")
 
 let deployed = {}
+let usdc = '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'
 
 async function deploy(name, ...args) {
   const C = await ethers.getContractFactory(name);
@@ -16,9 +17,7 @@ async function main() {
   const acc = await ethers.getSigners()
   console.log('Deployer: '+acc[0].address)
 
-  const stable =  await deploy("StableCoin", 'US Dollar', 'USD')
-  await stable.mint(acc[0].address, "1000000000000") // mint 1M USD to deployer
-  const forge = await deploy("Forge", stable.address, 6, "100000000") // 100$ minimum collateral
+  const forge = await deploy("Forge", usdc, 6, "200000000") // 200$ minimum collateral
 
   // const synth =  await deploy("ForgeAsset", 'Synthetic Gold', 'sXAU')
   // let MINTER_ROLE = await synth.MINTER_ROLE()

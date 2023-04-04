@@ -2,14 +2,14 @@ const {ethers} = require("hardhat");
 const hre = require("hardhat")
 
 let deployed = {}
-let forgeAddr = "0x99a4D750a50e6BBA06A81187eD699662f17221c1"
-let assetName = "Forged Euro"
-let assetSymbol = "fEUR"
-let depositRatio = "110000000"
-let liqThreshold = "108000000"
+let forgeAddr = "0x4938D2016e7446a24b07635611bD34289Df42ECb"
+let assetName = "Forged Chinese Yuan"
+let assetSymbol = "fCNY"
+let depositRatio = "115000000"
+let liqThreshold = "110000000"
 let divisorDecimals = 8
-let oracle0 = "0x1a81afB8146aeFfCFc5E50e8479e826E7D55b910"
-let oracle1 = "0xA2F78ab2355fe2f984D808B5CeE7FD0A93D5270E" // usdc/usd
+let oracle0 = "0xcC3370Bde6AFE51e1205a5038947b9836371eCCb"
+let oracle1 = "0x50834F3163758fcC1Df9973b6e91f0F0F0434aD3" // usdc/usd
 
 async function deploy(name, ...args) {
   const C = await ethers.getContractFactory(name);

@@ -31,7 +31,7 @@ contract Forge {
     }
 
     // Pauses everything
-    bool public allPaused;
+    bool public isPaused;
 
     // Special addresses
     address public admin;
@@ -46,12 +46,12 @@ contract Forge {
     uint8 public cRatioDecimals = 8;
 
     // Fees scheme
-    uint256 public fee = 10;
+    uint256 public fee = 50; // 0.5%
     uint256 public feeBase = 10000;
     uint256 public feeLiquidatorPercent = 500; // 5%
     uint256 public feeLiquidatorPercentBase = 10000;
 
-    // Minimum required collateral in a vault
+    // Minimum required collateral in an oven
     uint public minCollateral;
 
     // List of all ovens
@@ -103,7 +103,7 @@ contract Forge {
 
     // EXTERNAL FUNCTIONS
     function open(uint collateral, uint amount, uint assetId) external {
-        require(!allPaused, "All paused");
+        require(!isPaused, "All paused");
         Asset storage asset = assets[assetId];
         require(!asset.paused, "Asset paused");
         require(collateral >= minCollateral, "Not enough collateral");
@@ -134,7 +134,7 @@ contract Forge {
     }
     
     function close(uint id) external {
-        require(!allPaused, "All paused");
+        require(!isPaused, "All paused");
         Oven memory oven = ovens[msg.sender][id];
         require(msg.sender == oven.account, "Only issuer");
         Asset storage asset = assets[oven.token];
@@ -158,7 +158,7 @@ contract Forge {
     }
 
     function edit(uint id, uint collateral, uint amount) external {
-        require(!allPaused, "All paused");
+        require(!isPaused, "All paused");
         Oven memory oven = ovens[msg.sender][id];
         require(msg.sender == oven.account, "Only issuer");
         Asset storage asset = assets[oven.token];
@@ -202,7 +202,7 @@ contract Forge {
     }
     
     function liquidate(address account, uint id, uint amount) external {
-        require(!allPaused, "All paused");
+        require(!isPaused, "All paused");
         require(amount > 0, "Cant burn zero");
         Oven memory oven = ovens[account][id];
         require(oven.amount >= amount, "Amount larger than oven");
@@ -242,7 +242,7 @@ contract Forge {
 
         emit Liquidate(oven.account, msg.sender, id, collateral, amount, paidFee);
         if (oven.collateral == 0) {
-            require(oven.amount == 0, "Vault should be closing but amount is >0");
+            require(oven.amount == 0, "Oven should be closing but amount is >0");
             if (id != ovens[account].length -1) {
                 ovens[account][id] = ovens[account][ovens[account].length - 1];
             }
@@ -254,12 +254,12 @@ contract Forge {
     // PAUSER FUNCTIONS
     function pause() external {
         require(msg.sender == pauser, "Pauser only");
-        allPaused = true;
+        isPaused = true;
     }
 
-    function resume() external {
+    function unpause() external {
         require(msg.sender == pauser, "Pauser only");
-        allPaused = false;
+        isPaused = false;
     }
 
     function pauseAsset(uint id) external {
@@ -307,6 +307,13 @@ contract Forge {
         require(msg.sender == admin, "Admin only");
         assets[id].oracle = _oracle;
         assets[id].oracleDecimals = IAggregatorV3(_oracle).decimals();
+    }
+
+    function setAssetRatios(uint _depositRatio, uint _liquidationThreshold, uint id) external {
+        require(msg.sender == admin, "Admin only");
+        require(_liquidationThreshold < _depositRatio, "liquidationThreshold is bigger than depositRatio");
+        assets[id].depositRatio = _depositRatio;
+        assets[id].liquidationThreshold = _liquidationThreshold;
     }
     
     function addAsset(IForgeAsset _token, address _oracle, bool _paused, uint _depositRatio, uint _liquidationThreshold) external {

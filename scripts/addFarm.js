@@ -2,7 +2,7 @@ const {ethers} = require("hardhat");
 const hre = require("hardhat");
 
 let alloc = 1000
-let lpAddress = '0x2464BDb9f15BA637d4007Ae4c097cA57e3e3fA73'
+let lpAddress = '0xe7D70FfB91Fbd5e9065bD9a863E6AB3FCC9c7632'
 
 main()
 async function main() {

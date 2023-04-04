@@ -2,7 +2,7 @@ const {ethers} = require("hardhat");
 const hre = require("hardhat")
 
 let deployed = {}
-let weth = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+let forgeAddr = '0x4938D2016e7446a24b07635611bD34289Df42ECb'
 
 async function deploy(name, ...args) {
   const C = await ethers.getContractFactory(name);
@@ -17,10 +17,7 @@ async function main() {
   const acc = await ethers.getSigners()
   console.log('Deployer: '+acc[0].address)
 
-  const factory = await deploy("UniswapV2Factory", acc[0].address)
-  const router = await deploy("UniswapV2Router02", factory.address, weth)
-
-  console.log(deployed)
+  const finder = await deploy("LiquidationFinder", forgeAddr)
 }
 
 main()
