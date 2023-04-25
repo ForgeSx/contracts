@@ -2,11 +2,11 @@ const {ethers} = require("hardhat");
 const hre = require("hardhat");
 
 let alloc = 1000
-let lpAddress = '0xe7D70FfB91Fbd5e9065bD9a863E6AB3FCC9c7632'
+let lpAddress = '0xa25c778AA287f29F3972aD30a1b260b95f6829F6'
 
 main()
 async function main() {
-  let mc = await hre.ethers.getContractAt("MasterChef", "0xA8e7F405A91998A62e0c03e6f5496755be050716");
+  let mc = await hre.ethers.getContractAt("MasterChef", "0xD98C6b2abD032D7FAACDFD997162CD7eA0fD95E4");
   
   let nPools = await mc.poolLength()
   console.log(nPools)

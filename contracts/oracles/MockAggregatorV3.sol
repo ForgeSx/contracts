@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.0;
 
-import "./interfaces/IAggregatorV3.sol";
+import "../interfaces/IAggregatorV3.sol";
 
 /**
  * @title MockV3Aggregator
