@@ -2,10 +2,6 @@ const {ethers} = require("hardhat");
 const hre = require("hardhat")
 
 let deployed = {}
-let divisorDecimals = 8
-let pythAddress = "0xff1a0f4744e8582DF1aE09D5611b887B6a12925C"
-let oracle0 = "0x16dad506d7db8da01c87581c87ca897a012a153557d4d578c3b9c9e1bc0632f1" // TSLA/USD
-let oracle1 = "0x50834F3163758fcC1Df9973b6e91f0F0F0434aD3" // usdc/usd
 
 async function deploy(name, ...args) {
   const C = await ethers.getContractFactory(name);
@@ -20,7 +16,16 @@ async function main() {
   const acc = await ethers.getSigners()
   console.log('Deployer: '+acc[0].address)
 
-  let divisor = await deploy("AggregatorDivisorPyth", divisorDecimals, pythAddress, oracle0, oracle1)
+  const veArt = await deploy("VeArtProxy")
+  const veForge = await deploy("VotingEscrow", forgeToken.address, veArt.address)
+  const rewardsDistributor = await deploy(
+    "RewardsDistributor",
+    veForge.address,
+    "0x5a9d91ba2660446A496C52e3869FBD2A63c0a6BB",
+    "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+    "0x3Be54346E6DbC435931178EAc7730ab513EcE4C0",
+    5000
+  )
 
   console.log(deployed)
 }
